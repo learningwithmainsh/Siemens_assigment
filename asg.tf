@@ -9,7 +9,7 @@ resource "aws_lb" "siemens_load_balancer" {
     aws_subnet.siemensvpc-public-2.id
   ]
 
-  enable_deletion_protection        = false  # Set to true if you want to enable deletion protection
+  enable_deletion_protection        = false  
   enable_cross_zone_load_balancing  = true
 
   tags = {
@@ -56,8 +56,8 @@ resource "aws_autoscaling_attachment" "siemens_asg_attachment" {
 # Create an Auto Scaling Group
 resource "aws_launch_configuration" "siemens_launch_config" {
   name = "siemens-launch-config"
-  image_id                   = "ami-06b72b3b2a773be2b"        # Replace with your desired AMI ID
-  instance_type              = "t2.micro"                     # Replace with your desired instance type
+  image_id                   = "ami-06b72b3b2a773be2b"        
+  instance_type              = "t2.micro"                    
 
  security_groups             = [aws_security_group.allow-siemens-ssh.id, aws_security_group.http-siemens.id]
    associate_public_ip_address = true
@@ -81,14 +81,13 @@ resource "aws_autoscaling_group" "siemens_auto_scaling_group" {
   min_size             = 1
   launch_configuration = aws_launch_configuration.siemens_launch_config.id
  vpc_zone_identifier       = [
-    aws_subnet.siemensvpc-public-1.id,
-    aws_subnet.siemensvpc-public-2.id
+    aws_subnet.siemensvpc-private-1.id,
+    aws_subnet.siemensvpc-private-2.id
    
   ]
 
-#   health_check_type    = "EC2"
-  force_delete         = true  # Set to true to allow Terraform to forcibly delete the Auto Scaling Group
 
+  force_delete         = true 
   tag {
     key                 = "Name"
     value               = "siemens-auto-scaling-group"
