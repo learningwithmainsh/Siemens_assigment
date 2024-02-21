@@ -1,6 +1,7 @@
 Prerequisite
 1. AWS account with admin access with access key or secret access key or if you running from aws workspace  IAM role should be attached to service. 
 2. Git Bash must installed
+3 Please enter keypair name in asg.tf file
 
 Steps 
 1. Clone repo  using  command 
